@@ -1,0 +1,12 @@
+{% extends "test2.html" %}
+
+{% block content %}
+<div style="max-width: 600px; margin: auto; padding-top: 50px;"> <!-- Ajusta el padding-top según sea necesario -->
+    <h1>Inicio Amansanderia Mana</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button>Iniciar Sesion</button>
+    </form>
+</div>
+{% endblock %}

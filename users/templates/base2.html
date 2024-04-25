@@ -1,0 +1,37 @@
+<!-- templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Proyecto con AdminLTE</title>
+
+    <!-- CSS de AdminLTE y dependencias -->
+    <link rel="stylesheet" href="{% static 'adminlte/css/adminlte.min.css' %}">
+    <!-- ... otras dependencias como Bootstrap, Font Awesome, etc ... -->
+</head>
+
+<body class="hold-transition login-page">
+
+<div class="login-box">
+    <!-- Logo del proyecto -->
+    <div class="login-logo">
+        <a href="{% url 'login' %}"><b>Mi Proyecto</b> con AdminLTE</a>
+    </div>
+    <!-- Contenido principal -->
+    <div class="card">
+        <div class="card-body login-card-body">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+<!-- Scripts de AdminLTE y dependencias -->
+<script src="{% static 'adminlte/js/adminlte.min.js' %}"></script>
+<!-- ... otros scripts como jQuery, Bootstrap, etc ... -->
+
+</body>
+
+</html>
