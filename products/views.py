@@ -56,7 +56,7 @@ def Addproducto(request):
         "form_personal": form_personal,
         "form_edit": form_edit,
         "form": form_personal,
-    }	
+    }
     return render(request, 'products/productos.html', context)
 
 
@@ -73,7 +73,7 @@ def Addproducto3(request):
     context = {
         "productos": productos,
         "form_add": form
-    }   
+    }
     return render(request, 'products/productos.html', context)
 
 def edit_producto_view(request):
@@ -87,7 +87,7 @@ def edit_producto_view(request):
         print("paso form")
         if form.is_valid():
             form.save()
-        print("pàso todo")    
+        print("pàso todo")
     return render(request, 'products/productos.html')
 
 def Deleteproducto2(request):
@@ -108,25 +108,19 @@ def Deleteproducto2(request):
 
 
 
-def webeo(request):
-
-    return redirect( 'products/productos.html')
-
-
-
 
 def Editproducto(request):
     print("entro a editar")
-    
+
     if request.method == 'POST':
         print("entro a post")
         print(request.POST)
         producto_id = request.POST.get('id_producto_editar')
         print(producto_id)
-        
+
         if not producto_id.isdigit():
             print("producto_id no es un número válido:", producto_id)
-        
+
         producto = get_object_or_404(Producto, pk=int(producto_id))
         print("paso producto")
         print("antes de form")
@@ -145,13 +139,13 @@ def Editproducto(request):
 
     # Aquí insertaremos la línea para imprimir los campos del formulario
     print("Campos del formulario:", form.fields)
-    
+
     productos = Producto.objects.all()
     context = {
         "productos": productos,
         "form_edit": form,
-    }   
-    
+    }
+
     return render(request, 'products/productos.html', context)
 
 
@@ -184,7 +178,7 @@ def simple_producto_view(request):
             # Aquí puedes redirigir o hacer lo que necesites después de guardar el formulario
 
     context = {
-        
+
         "form_add": form_personal,
         'simple_form': form,
     }
@@ -198,7 +192,7 @@ def add_cliente_view(request):
     if request.POST:
         form = AddProductoForm(request.POST, request.FILES)
         if form.is_valid:
-            try: 
+            try:
                 form.save()
             except:
                 messages(request, "Error al guardar el cliente")
