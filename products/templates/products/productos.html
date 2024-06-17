@@ -16,16 +16,16 @@
                 <h5 class="modal-title text-dark">Agregar nuevo producto</h5>
             </div>
             <div class="modal-body bg-dark text-white">
-                <form method="POST" action="{% url 'Addproducto2' %}" enctype="multipart/form-data">{% csrf_token %}
-                    {% for field in form_personal %}
-                    <p>{{field.label}} <br>
-                        {{field|add_class:"form-control text-dark"}}</p>
+                <form method="POST" action="{% url 'add_producto' %}" enctype="multipart/form-data">{% csrf_token %}
+                    {% for field in form_add %}
+                    <p>{{ field.label }} <br>
+                        {{ field|add_class:"form-control text-dark" }}</p>
                     {% for error in field.errors %}
-                    <p class="alarma">{{error}}</p>
+                    <p class="alarma">{{ error }}</p>
                     {% endfor %}
                     {% endfor %}
-                    {% for error in form.non_field_errors %}
-                    <p class="alarma">{{error}}</p> 
+                    {% for error in form_add.non_field_errors %}
+                    <p class="alarma">{{ error }}</p>
                     {% endfor %}
             </div>
             <div class="modal-footer bg-dark">
@@ -35,13 +35,11 @@
                 <button type="submit" class="btn btn-success">
                     Agregar
                 </button>
-            </div>
                 </form>
+            </div>
         </div>
     </div>
 </div>
-
-
 
 <!-- Editar Producto Modal -->
 <div id="EditarProductoModal" class="modal">
@@ -51,17 +49,17 @@
                 <h5 class="modal-title text-dark">Editar producto</h5>
             </div>
             <div class="modal-body bg-dark text-white">
-                <form method="POST" action="{% url 'Editproducto2' %}" enctype="multipart/form-data">{% csrf_token %}
+                <form method="POST" action="{% url 'edit_producto' %}" enctype="multipart/form-data">{% csrf_token %}
                     <input type="hidden" id="id_producto_editar" name="id_producto_editar">
                     {% for field in form_edit %}
-                    <p>{{field.label}} <br>
-                        {{field|add_class:"form-control"}}</p>
+                    <p>{{ field.label }} <br>
+                        {{ field|add_class:"form-control" }}</p>
                     {% for error in field.errors %}
-                    <p class="alarma">{{error}}</p>
+                    <p class="alarma">{{ error }}</p>
                     {% endfor %}
                     {% endfor %}
-                    {% for error in form.non_field_errors %}
-                    <p class="alarma">{{error}}</p>
+                    {% for error in form_edit.non_field_errors %}
+                    <p class="alarma">{{ error }}</p>
                     {% endfor %}
             </div>
             <div class="modal-footer bg-dark text-white">
@@ -86,8 +84,8 @@
             </div>
             <div class="modal-body bg-dark text-white">
                 <p class="labelmodal">¿Estás seguro de querer eliminar este producto?</p>
-                <form method="POST" action="{% url 'Deleteproducto2' %}">{% csrf_token %} 
-                    <input type="hidden" id="id_producto_eliminar" name="id_producto_eliminar" value="{{item.id}}">
+                <form method="POST" action="{% url 'delete_producto' %}">{% csrf_token %}
+                    <input type="hidden" id="id_producto_eliminar" name="id_producto_eliminar" value="{{ item.id }}">
             </div>
             <div class="modal-footer bg-dark text-white">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">
@@ -104,10 +102,9 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h3 class="text-center">Inventario   <i class="fas fa-users"></i></h3>
+        <h3 class="text-center">Inventario <i class="fas fa-users"></i></h3>
         <div class="col-md-3 pb-2">
-            <a href="#AgregarProductoModal"
-                data-toggle="modal" data-dismiss="modal">
+            <a href="#AgregarProductoModal" data-toggle="modal" data-dismiss="modal">
                 <button type="button" class="btn btn-success">
                     Agregar Producto
                     <i class="fas fa-plus-circle"></i>
@@ -132,20 +129,21 @@
                 <tbody class="text-dark">
                     {% for item in productos %}
                     <tr>
-                        <td>{{item.id}}</td>
-                        <td>{{item.categoria.nombre}}</td>
-                        <td>{{item.nombre}}</td>
-                        <td>{{item.descripcion}}</td>
-                        <td>${{item.precio_compra}}</td>
-                        <td>${{item.precio_venta}}</td>
-                        <td>{{item.proveedor}}</td>
-                        <td>{{item.en_stock}}</td>
-                    <td>
-                        <button onclick="editarPersonal('{{item.id}}','{{item.nombre}}', '{{item.descripcion}}', '{{item.precio_compra}}', '{{item.precio_venta}}', '{{item.proveedor}}', '{{item.en_stock}}')" class="btn btn-dark-outline btn-sm" data-toggle="modal" href="#EditarProductoModal"><img src="{% static 'index/img/editar.png' %}" alt="Error" width="30"></button>
-
-                        <button onclick="eliminarProducto('{{item.id}}')" class="btn btn-dark-outline btn-sm" data-toggle="modal" href="#EliminarPersonalModal"><img src="{% static 'index/img/delete.png' %}" alt="Error" width="30"></button>
-                        
-                                    
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.categoria.nombre }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td>{{ item.descripcion }}</td>
+                        <td>${{ item.precio_compra }}</td>
+                        <td>${{ item.precio_venta }}</td>
+                        <td>{{ item.proveedor }}</td>
+                        <td>{{ item.en_stock }}</td>
+                        <td>
+                            <button onclick="editarPersonal('{{ item.id }}', '{{ item.nombre }}', '{{ item.descripcion }}', '{{ item.precio_compra }}', '{{ item.precio_venta }}', '{{ item.proveedor }}', '{{ item.en_stock }}')" class="btn btn-dark-outline btn-sm" data-toggle="modal" href="#EditarProductoModal">
+                                <img src="{% static 'index/img/editar.png' %}" alt="Error" width="30">
+                            </button>
+                            <button onclick="eliminarProducto('{{ item.id }}')" class="btn btn-dark-outline btn-sm" data-toggle="modal" href="#EliminarPersonalModal">
+                                <img src="{% static 'index/img/delete.png' %}" alt="Error" width="30">
+                            </button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -154,16 +152,17 @@
         </div>
     </div>
 </div>
+
 {% if messages %}
 {% for message in messages %}
 <script>
     Swal.fire({
         icon: 'error',
         title: 'Error...',
-        text: "{{message}}",
+        text: "{{ message }}",
     })
 </script>
 {% endfor %}
 {% endif %}
-{% endblock %}
 
+{% endblock %}
