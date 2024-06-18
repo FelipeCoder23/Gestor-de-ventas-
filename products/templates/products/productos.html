@@ -1,5 +1,4 @@
 {% extends "jefe.html" %}
-
 {% load static %}
 {% load widget_tweaks %}
 
@@ -133,8 +132,8 @@
                         <td>{{ item.categoria.nombre }}</td>
                         <td>{{ item.nombre }}</td>
                         <td>{{ item.descripcion }}</td>
-                        <td>${{ item.precio_compra }}</td>
-                        <td>${{ item.precio_venta }}</td>
+                        <td>${{ item.precio_compra|floatformat:2 }}</td>
+                        <td>${{ item.precio_venta|floatformat:2 }}</td>
                         <td>{{ item.proveedor }}</td>
                         <td>{{ item.en_stock }}</td>
                         <td>
@@ -154,15 +153,15 @@
 </div>
 
 {% if messages %}
-{% for message in messages %}
-<script>
-    Swal.fire({
-        icon: 'error',
-        title: 'Error...',
-        text: "{{ message }}",
-    })
-</script>
-{% endfor %}
+    {% for message in messages %}
+    <script>
+        Swal.fire({
+            icon: '{% if message.tags %}{{ message.tags }}{% else %}info{% endif %}',
+            title: '{% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}Éxito{% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error{% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Advertencia{% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Información{% else %}Mensaje{% endif %}',
+            text: "{{ message }}",
+        })
+    </script>
+    {% endfor %}
 {% endif %}
 
 {% endblock %}

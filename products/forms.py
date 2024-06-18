@@ -2,13 +2,13 @@ from django import forms
 from .models import Producto
 
 
-    
+
 class AddProductoForm (forms.ModelForm):
     class Meta:
         model = Producto
         fields = ( "nombre", "descripcion", "precio_compra", "precio_venta", "proveedor", "en_stock")
         labels = {
-            
+
             "nombre": "Nombre producto",
             "descripcion": "Descripción",
             "precio_compra": "Costo producto",
@@ -19,7 +19,7 @@ class AddProductoForm (forms.ModelForm):
 
 
 class Editarinventarioform(forms.ModelForm):
-  
+
 
     class Meta:
         model = Producto
@@ -29,7 +29,7 @@ class Editarinventarioform(forms.ModelForm):
             "descripcion": "Descripción",
             "precio_compra": "Costo producto",
             "precio_venta": "Precio de venta",
-            "proveedor": "Proveedor",  
+            "proveedor": "Proveedor",
             "en_stock": "Cantidad en stock",
             }
         widgets = {
@@ -57,10 +57,14 @@ class Editarinventarioform2(forms.ModelForm):
             "proveedor": "Proveedor",
             "en_stock": "Cantidad en stock",
         }
-       
+
 
 
 class SimpleProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
         fields = ['nombre', 'descripcion', 'precio_compra', 'precio_venta', 'proveedor', 'en_stock']
+
+
+class UploadExcelForm(forms.Form):
+    excel_file = forms.FileField()

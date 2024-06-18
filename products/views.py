@@ -2,8 +2,9 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Producto
-from .forms import Editarinventarioform, AddProductoForm
+from .forms import Editarinventarioform, AddProductoForm,UploadExcelForm
 from django.contrib import messages
+import pandas as pd
 
 # Vista para mostrar los productos
 def productos_view(request):
@@ -52,3 +53,30 @@ def edit_producto(request):
         else:
             messages.error(request, "Error al editar el producto")
     return redirect('productos_view')
+
+# Vista para subir un archivo de Excel
+def upload_excel(request):
+    if request.method == 'POST':
+        form = UploadExcelForm(request.POST, request.FILES)
+        if form.is_valid():
+            excel_file = request.FILES['excel_file']
+            try:
+                df = pd.read_excel(excel_file)
+                for index, row in df.iterrows():
+                    producto, created = Producto.objects.update_or_create(
+                        nombre=row['Nombre'],
+                        defaults={
+                            'descripcion': row['Descripción'],
+                            'precio_compra': row['Precio Compra'],
+                            'precio_venta': row['Precio Venta'],
+                            'proveedor': row['Proveedor'],
+                            'en_stock': row['En Stock']
+                        }
+                    )
+                messages.success(request, "Productos actualizados exitosamente")
+            except Exception as e:
+                messages.error(request, f"Error al procesar el archivo: {e}")
+            return redirect('productos_view')
+    else:
+        form = UploadExcelForm()
+    return render(request, 'products/upload_excel.html', {'form': form})
