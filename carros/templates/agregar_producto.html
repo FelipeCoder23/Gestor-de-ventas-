@@ -1,0 +1,44 @@
+{% extends "jefe.html" %}
+{% block content %}
+<h1>Agregar Productos al Carro {{ egreso.numero_carro }}</h1>
+<form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="egreso_id" value="{{ egreso.id }}">
+    <div class="form-group">
+        <label for="producto_id">Producto:</label>
+        <select name="producto_id" class="form-control">
+            {% for producto in productos %}
+            <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" name="cantidad" class="form-control" min="1" value="1">
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar Producto</button>
+</form>
+<table class="table table-striped mt-4">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in egreso.productosegreso_set.all %}
+        <tr>
+            <td>{{ item.producto.nombre }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>
+                <form method="POST" action="{% url 'eliminar_item_carro' item.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

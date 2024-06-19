@@ -1,0 +1,13 @@
+{% extends "jefe.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<h1>Asignar Carro de Compra</h1>
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="numero_carro">Carros Disponibles:</label>
+        {{ form.numero_carro|add_class:"form-control" }}
+    </div>
+    <button type="submit" class="btn btn-primary">Asignar Carro</button>
+</form>
+{% endblock %}
