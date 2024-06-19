@@ -78,15 +78,15 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                 <li class="nav-header">OPCIONES</li>
-                
-                
+
+
                 <li class="nav-item">
-                    <a href="{% url 'AddVenta' %}" class="nav-link">
+                    <a href="{% url 'listar_egresos' %}" class="nav-link">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>Proceso de Compra</p>
                     </a>
                 </li>
-                
+
                 <li class="nav-item">
                     <a href="{% url 'empleado' %}" class="nav-link">
                         <i class="nav-icon fas fa-info-circle"></i>
@@ -95,7 +95,7 @@
                 </li>
 
                 <li class="nav-header">CUENTA</li>
-                
+
                 {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a href="{% url 'logout' %}" class="nav-link">
@@ -104,7 +104,7 @@
                     </a>
                 </li>
                 {% endif %}
-                
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
@@ -128,7 +128,7 @@
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-   
+
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">

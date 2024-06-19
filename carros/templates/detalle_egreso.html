@@ -1,0 +1,36 @@
+{% extends "jefe.html" %}
+{% block content %}
+<h1>Detalles del Egreso (Carro) {{ egreso.id }}</h1>
+<h2>Productos en el Carro</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.producto.nombre }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>
+                <form method="POST" action="{% url 'eliminar_item_carro' item.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Agregar Producto al Carro</h2>
+<form method="POST" action="{% url 'agregar_item_egreso' egreso.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Agregar</button>
+</form>
+
+{% endblock %}
