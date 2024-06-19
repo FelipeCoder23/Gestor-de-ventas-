@@ -1,0 +1,75 @@
+{% extends "jefe.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<h1>Agregar Productos al Carro {{ egreso.numero_carro }}</h1>
+
+<!-- Formulario para agregar productos al carro -->
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="producto">Producto:</label>
+        {{ form_add.producto|add_class:"form-control" }}
+    </div>
+    <div class="form-group">
+        <label for="cantidad">Cantidad:</label>
+        {{ form_add.cantidad|add_class:"form-control" }}
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar Producto</button>
+</form>
+
+<!-- Listado de productos en el carro -->
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in productos_egreso %}
+        <tr>
+            <td>{{ item.producto.nombre }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>
+                <button onclick="editarProducto('{{ item.id }}')" class="btn btn-dark-outline btn-sm" data-toggle="modal" href="#EditarProductoModal">Editar</button>
+                <form method="POST" action="{% url 'eliminar_producto' item.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal para editar producto -->
+<div id="EditarProductoModal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h5 class="modal-title text-dark">Editar producto del carro</h5>
+            </div>
+            <div class="modal-body bg-dark text-white">
+                <form method="POST" action="{% url 'editar_producto' item_id=0 %}" enctype="multipart/form-data" id="form_editar_producto">
+                    {% csrf_token %}
+                    <input type="hidden" id="id_producto_editar" name="id_producto_editar">
+                    {% for field in form_edit %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field|add_class:"form-control" }}
+                    </div>
+                    {% for error in field.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                    {% endfor %}
+                    <button type="submit" class="btn btn-success">Guardar cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

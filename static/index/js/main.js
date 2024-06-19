@@ -36,7 +36,7 @@ function editarProduct(id, precio, descripcion, costo, cantidad, categoria, serv
 }
 
 function historialPreventivo(id,solicitadoh,supervisado,responsable, subtotalpiezas, subtotalmo, fecha) {
-  
+
   document.getElementById("hist_preventivo_editar").value = id;
   document.getElementById("hist_solicitadoh").value = solicitadoh;
   document.getElementById("hist_supervisadoh").value = supervisado;
@@ -47,7 +47,7 @@ function historialPreventivo(id,solicitadoh,supervisado,responsable, subtotalpie
 }
 
 function editarPreventivo(id, fecha, contacto, piezas, actividades, comentarios, total) {
-  
+
   document.getElementById("id_preventivo_editar").value = id;
   document.getElementById("fecha_editar").value = fecha;
   document.getElementById("contacto_editar").value = contacto;
@@ -58,7 +58,7 @@ function editarPreventivo(id, fecha, contacto, piezas, actividades, comentarios,
 }
 
 function editarCorrectivo(id, equipo, fecha, solicitado, estado, responsable, actividades, subtotalmo, supervisado, falla) {
-  
+
   document.getElementById("id_correctivo_editar").value = id;
   document.getElementById("equipo_editar").value = equipo;
   document.getElementById("fecha_editar").value = fecha;
@@ -76,7 +76,7 @@ function eliminarCorrectivo(id) {
 }
 
 function historialCorrectivo(id,solicitadoh,supervisado,responsable, subtotalpiezas, subtotalmo, fecha) {
-  
+
   document.getElementById("hist_correctivo_editar").value = id;
   document.getElementById("hist_solicitadoh").value = solicitadoh;
   document.getElementById("hist_supervisadoh").value = supervisado;
@@ -123,6 +123,11 @@ function activarEspera(){
   btn.innerHTML = 'Generando ... <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
   btn.disabled = true;
 }
+function editarProducto(item_id) {
+  document.getElementById("id_producto_editar").value = item_id;
+  document.getElementById("form_editar_producto").action = `/carros/editar_producto/${item_id}/`;
+}
+
 
 $(document).ready(function () {
 
@@ -157,4 +162,3 @@ $(document).ready(function () {
     ]
   });
 });
- 

@@ -1,22 +1,19 @@
 {% extends "jefe.html" %}
 {% block content %}
 <h1>Egresos (Carros de Compra)</h1>
-<a href="{% url 'asignar_carro' %}" class="btn btn-primary">Asignar Carro</a>
-<table>
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>Número de Egreso</th>
-            <th>Fecha de Pedido</th>
+            <th>Número de Carro</th>
             <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
         {% for egreso in egresos %}
         <tr>
-            <td>{{ egreso.id }}</td>
-            <td>{{ egreso.fecha_pedido }}</td>
+            <td>{{ egreso.numero_carro }}</td>
             <td>
-                <a href="{% url 'detalle_egreso' egreso.id %}">Ver Detalles</a>
+                <a href="{% url 'agregar_productos' egreso.id %}" class="btn btn-primary">Asignar Productos</a>
             </td>
         </tr>
         {% endfor %}

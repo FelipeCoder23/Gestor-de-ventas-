@@ -1,0 +1,19 @@
+{% extends "jefe.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<h1>Editar Producto del Carro</h1>
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="producto_editar">Producto:</label>
+        {{ form_edit.producto|add_class:"form-control" }}
+    </div>
+    <div class="form-group">
+        <label for="cantidad_editar">Cantidad:</label>
+        {{ form_edit.cantidad|add_class:"form-control" }}
+    </div>
+    <button type="submit" class="btn btn-success">Guardar cambios</button>
+</form>
+{% endblock %}
