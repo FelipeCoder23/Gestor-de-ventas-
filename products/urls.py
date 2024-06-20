@@ -8,4 +8,6 @@ urlpatterns = [
     path('delete/', views.delete_producto, name='delete_producto'),
     path('', views.productos_view, name='productos_view'),
     path('upload_excel/', views.upload_excel, name='upload_excel'),
+    path('desactivar_producto/<int:producto_id>/', views.desactivar_producto, name='desactivar_producto'),
+    path('activar_producto/<int:producto_id>/', views.activar_producto, name='activar_producto'),
 ]

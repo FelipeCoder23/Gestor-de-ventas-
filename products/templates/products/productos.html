@@ -143,6 +143,17 @@
                             <button onclick="eliminarProducto('{{ item.id }}')" class="btn btn-dark-outline btn-sm" data-toggle="modal" href="#EliminarPersonalModal">
                                 <img src="{% static 'index/img/delete.png' %}" alt="Error" width="30">
                             </button>
+                            {% if item.is_active %}
+                            <form method="POST" action="{% url 'desactivar_producto' item.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-warning btn-sm">Desactivar</button>
+                            </form>
+                            {% else %}
+                            <form method="POST" action="{% url 'activar_producto' item.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-sm">Activar</button>
+                            </form>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}

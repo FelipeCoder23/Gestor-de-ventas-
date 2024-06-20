@@ -3,6 +3,7 @@ from .models import Egreso, ProductosEgreso
 from products.models import Producto
 from .forms import AddItemCarroForm, EgresoForm, EditItemCarroForm
 from django.contrib import messages
+from django.http import JsonResponse
 
 def listar_egresos(request):
     egresos = Egreso.objects.filter(usado=False)
@@ -41,6 +42,7 @@ def asignar_carro(request, egreso_id):
     egreso.usado = True
     egreso.save()
     return redirect('agregar_productos', egreso_id=egreso_id)
+
 def agregar_productos(request, egreso_id):
     egreso = get_object_or_404(Egreso, id=egreso_id)
     productos_egreso = ProductosEgreso.objects.filter(egreso=egreso)
@@ -48,36 +50,49 @@ def agregar_productos(request, egreso_id):
     if request.method == 'POST':
         form = AddItemCarroForm(request.POST)
         if form.is_valid():
-            producto_egreso = form.save(commit=False)
-            producto_egreso.egreso = egreso
-            producto_egreso.save()
-            messages.success(request, "Producto agregado exitosamente")
+            producto = form.cleaned_data['producto']
+            cantidad = form.cleaned_data['cantidad']
+            precio = producto.precio_venta
+            subtotal = cantidad * precio
+            ProductosEgreso.objects.create(egreso=egreso, producto=producto, cantidad=cantidad, precio=precio, subtotal=subtotal)
             return redirect('agregar_productos', egreso_id=egreso.id)
-        else:
-            messages.error(request, "Error al agregar el producto")
     else:
-        form = AddItemCarroForm()
+        form_add = AddItemCarroForm()
+        form_edit = EditItemCarroForm()
 
-    productos = Producto.objects.all()
-    return render(request, 'agregar_productos.html', {'egreso': egreso, 'productos': productos, 'productos_egreso': productos_egreso, 'form_add': form})
+    return render(request, 'agregar_productos.html', {
+        'egreso': egreso,
+        'productos_egreso': productos_egreso,
+        'form_add': form_add,
+        'form_edit': form_edit
+    })
+
+def eliminar_producto(request, item_id):
+    producto_egreso = get_object_or_404(ProductosEgreso, id=item_id)
+    egreso_id = producto_egreso.egreso.id
+    producto_egreso.delete()
+    return redirect('agregar_productos', egreso_id=egreso_id)
 
 def editar_producto(request, item_id):
-    item = get_object_or_404(ProductosEgreso, id=item_id)
+    producto = get_object_or_404(ProductosEgreso, pk=item_id)
     if request.method == 'POST':
-        form = EditItemCarroForm(request.POST, instance=item)
+        form = EditItemCarroForm(request.POST, instance=producto)
         if form.is_valid():
             form.save()
             messages.success(request, "Producto editado exitosamente")
-            return redirect('agregar_productos', egreso_id=item.egreso.id)
         else:
             messages.error(request, "Error al editar el producto")
-    else:
-        form = EditItemCarroForm(instance=item)
-    return render(request, 'editar_producto.html', {'form_edit': form, 'item': item})
+    return redirect('agregar_productos', egreso_id=producto.egreso.id)
 
-def eliminar_producto(request, item_id):
-    item = get_object_or_404(ProductosEgreso, id=item_id)
-    egreso_id = item.egreso.id
-    item.delete()
-    messages.success(request, "Producto eliminado del carro exitosamente")
-    return redirect('agregar_productos', egreso_id=egreso_id)
+def buscar_productos(request):
+    if 'q' in request.GET:
+        query = request.GET['q']
+        productos = Producto.objects.filter(nombre__icontains=query)
+        results = []
+        for producto in productos:
+            results.append({
+                'id': producto.id,
+                'nombre': producto.nombre
+            })
+        return JsonResponse(results, safe=False)
+    return JsonResponse({'error': 'No query provided'}, status=400)

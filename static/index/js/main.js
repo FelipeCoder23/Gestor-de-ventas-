@@ -123,11 +123,12 @@ function activarEspera(){
   btn.innerHTML = 'Generando ... <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
   btn.disabled = true;
 }
-function editarProducto(item_id) {
-  document.getElementById("id_producto_editar").value = item_id;
-  document.getElementById("form_editar_producto").action = `/carros/editar_producto/${item_id}/`;
+function editarProducto(id) {
+  id = parseInt(id) + 1;
+  document.getElementById("id_producto_editar").value = id;
+  document.getElementById("form_editar_producto").action = `/carros/editar_producto/${id}/`;
+  $('#EditarProductoModal').modal('show');
 }
-
 
 $(document).ready(function () {
 

@@ -1,8 +1,6 @@
-
-
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Producto
-from .forms import Editarinventarioform, AddProductoForm,UploadExcelForm
+from .forms import Editarinventarioform, AddProductoForm, UploadExcelForm
 from django.contrib import messages
 import pandas as pd
 
@@ -54,6 +52,22 @@ def edit_producto(request):
             messages.error(request, "Error al editar el producto")
     return redirect('productos_view')
 
+# Vista para desactivar un producto
+def desactivar_producto(request, producto_id):
+    producto = get_object_or_404(Producto, pk=producto_id)
+    producto.is_active = False
+    producto.save()
+    messages.success(request, "Producto desactivado exitosamente")
+    return redirect('productos_view')
+
+# Vista para activar un producto
+def activar_producto(request, producto_id):
+    producto = get_object_or_404(Producto, pk=producto_id)
+    producto.is_active = True
+    producto.save()
+    messages.success(request, "Producto activado exitosamente")
+    return redirect('productos_view')
+
 # Vista para subir un archivo de Excel
 def upload_excel(request):
     if request.method == 'POST':
@@ -70,7 +84,8 @@ def upload_excel(request):
                             'precio_compra': row['Precio Compra'],
                             'precio_venta': row['Precio Venta'],
                             'proveedor': row['Proveedor'],
-                            'en_stock': row['En Stock']
+                            'en_stock': row['En Stock'],
+                            'is_active': True
                         }
                     )
                 messages.success(request, "Productos actualizados exitosamente")

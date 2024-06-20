@@ -6,7 +6,7 @@
 <h1>Agregar Productos al Carro {{ egreso.numero_carro }}</h1>
 
 <!-- Formulario para agregar productos al carro -->
-<form method="POST">
+<form method="POST" id="form_agregar_producto">
     {% csrf_token %}
     <div class="form-group">
         <label for="producto">Producto:</label>
@@ -25,6 +25,8 @@
         <tr>
             <th>Producto</th>
             <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Subtotal</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -33,6 +35,8 @@
         <tr>
             <td>{{ item.producto.nombre }}</td>
             <td>{{ item.cantidad }}</td>
+            <td>${{ item.precio }}</td>
+            <td>${{ item.subtotal }}</td>
             <td>
                 <button onclick="editarProducto('{{ item.id }}')" class="btn btn-dark-outline btn-sm" data-toggle="modal" href="#EditarProductoModal">Editar</button>
                 <form method="POST" action="{% url 'eliminar_producto' item.id %}" style="display:inline;">
@@ -53,7 +57,7 @@
                 <h5 class="modal-title text-dark">Editar producto del carro</h5>
             </div>
             <div class="modal-body bg-dark text-white">
-                <form method="POST" action="{% url 'editar_producto' item_id=0 %}" enctype="multipart/form-data" id="form_editar_producto">
+                <form method="POST" action="{% url 'editar_producto' 0 %}" enctype="multipart/form-data" id="form_editar_producto">
                     {% csrf_token %}
                     <input type="hidden" id="id_producto_editar" name="id_producto_editar">
                     {% for field in form_edit %}
@@ -73,3 +77,11 @@
 </div>
 
 {% endblock %}
+
+<script>
+function editarProducto(id) {
+    document.getElementById("id_producto_editar").value = id;
+    document.getElementById("form_editar_producto").action = `/carros/editar_producto/${id}/`;
+    $('#EditarProductoModal').modal('show');
+}
+</script>
