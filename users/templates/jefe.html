@@ -107,6 +107,21 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                  <a href="{% url 'listar_carros' %}" class="nav-link">
+                      <i class="nav-icon fas fa-cash-register"></i>
+                      <p>Caja</p>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a href="{% url 'ventas_diarias' %}" class="nav-link">
+                      <i class="nav-icon fas fa-cash-register"></i>
+                      <p>Ventas Diarias</p>
+                  </a>
+                </li>
+
+
                 <li class="nav-header">CUENTA</li>
 
                 {% if user.is_authenticated %}

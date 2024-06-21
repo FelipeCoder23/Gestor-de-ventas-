@@ -1,0 +1,49 @@
+{% extends "jefe.html" %}
+{% block content %}
+<h1>Carros de Compra</h1>
+
+<h2>Carros No Usados</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for egreso in carros_no_usados %}
+        <tr>
+            <td>{{ egreso.id }}</td>
+            <td>{{ egreso.fecha }}</td>
+            <td>
+                <a href="{% url 'detalle_egreso' egreso.id %}" class="btn btn-info">Ver Detalles</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Carros Usados</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for egreso in carros_usados %}
+        <tr>
+            <td>{{ egreso.id }}</td>
+            <td>{{ egreso.fecha }}</td>
+            <td>
+                <a href="{% url 'detalle_egreso' egreso.id %}" class="btn btn-info">Ver Detalles</a>
+                <a href="{% url 'realizar_venta' egreso.id %}" class="btn btn-success">Realizar Venta</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

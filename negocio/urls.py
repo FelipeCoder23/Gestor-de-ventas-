@@ -16,13 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-from django.conf.urls.static import static   
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('users.urls')),
     path('productos/', include('products.urls')),
     path('carros/', include('carros.urls')),
+    path('caja/', include('caja.urls')),
 ]
 
 if settings.DEBUG: # Esto es importante para asegurarte de que solo se sirvan en desarrollo

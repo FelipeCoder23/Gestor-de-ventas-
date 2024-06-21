@@ -1,0 +1,16 @@
+{% extends "jefe.html" %}
+{% block content %}
+<h1>Realizar Venta para Carro {{ egreso.id }}</h1>
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="metodo_pago">Método de Pago:</label>
+        <select name="metodo_pago" class="form-control" required>
+            <option value="Efectivo">Efectivo</option>
+            <option value="Debito">Débito</option>
+            <option value="Credito">Crédito</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Confirmar Venta</button>
+</form>
+{% endblock %}

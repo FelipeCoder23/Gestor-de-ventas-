@@ -96,3 +96,11 @@ def buscar_productos(request):
             })
         return JsonResponse(results, safe=False)
     return JsonResponse({'error': 'No query provided'}, status=400)
+
+
+def guardar_carro(request, egreso_id):
+    egreso = get_object_or_404(Egreso, id=egreso_id)
+    egreso.usado = True
+    egreso.save()
+    messages.success(request, "Carro guardado y marcado como usado exitosamente.")
+    return redirect('listar_egresos')

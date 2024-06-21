@@ -38,7 +38,7 @@
             <td>${{ item.precio }}</td>
             <td>${{ item.subtotal }}</td>
             <td>
-                <button onclick="editarProducto('{{ item.id }}')" class="btn btn-dark-outline btn-sm" data-toggle="modal" href="#EditarProductoModal">Editar</button>
+                <button onclick="editarProducto('{{ item.id }}', '{{ item.producto.nombre }}', '{{ item.producto.descripcion }}', '{{ item.precio }}', '{{ item.cantidad }}')" class="btn btn-dark-outline btn-sm" data-toggle="modal" href="#EditarProductoModal">Editar</button>
                 <form method="POST" action="{% url 'eliminar_producto' item.id %}" style="display:inline;">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
@@ -48,40 +48,38 @@
         {% endfor %}
     </tbody>
 </table>
+<!-- Botón para guardar el carro -->
+<form method="POST" action="{% url 'guardar_carro' egreso.id %}">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-success">Guardar Carro</button>
+</form>
 
 <!-- Modal para editar producto -->
 <div id="EditarProductoModal" class="modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-info">
-                <h5 class="modal-title text-dark">Editar producto del carro</h5>
-            </div>
-            <div class="modal-body bg-dark text-white">
-                <form method="POST" action="{% url 'editar_producto' 0 %}" enctype="multipart/form-data" id="form_editar_producto">
-                    {% csrf_token %}
-                    <input type="hidden" id="id_producto_editar" name="id_producto_editar">
-                    {% for field in form_edit %}
-                    <div class="form-group">
-                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                        {{ field|add_class:"form-control" }}
-                    </div>
-                    {% for error in field.errors %}
-                    <p class="text-danger">{{ error }}</p>
-                    {% endfor %}
-                    {% endfor %}
-                    <button type="submit" class="btn btn-success">Guardar cambios</button>
-                </form>
-            </div>
-        </div>
-    </div>
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header bg-info">
+              <h5 class="modal-title text-dark">Editar producto del carro</h5>
+          </div>
+          <div class="modal-body bg-dark text-white">
+              <form method="POST" action="{% url 'editar_producto' 0 %}" enctype="multipart/form-data" id="form_editar_producto">
+                  {% csrf_token %}
+                  <input type="hidden" id="id_producto_editar" name="id_producto_editar">
+                  {% for field in form_edit %}
+                  <div class="form-group">
+                      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                      {{ field|add_class:"form-control" }}
+                  </div>
+                  {% for error in field.errors %}
+                  <p class="text-danger">{{ error }}</p>
+                  {% endfor %}
+                  {% endfor %}
+                  <button type="submit" class="btn btn-success">Guardar cambios</button>
+              </form>
+          </div>
+      </div>
+  </div>
 </div>
 
-{% endblock %}
 
-<script>
-function editarProducto(id) {
-    document.getElementById("id_producto_editar").value = id;
-    document.getElementById("form_editar_producto").action = `/carros/editar_producto/${id}/`;
-    $('#EditarProductoModal').modal('show');
-}
-</script>
+{% endblock %}
